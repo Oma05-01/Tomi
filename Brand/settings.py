@@ -12,7 +12,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'your-default-dev-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['your-app-name.onrender.com', 'www.tomi-ifebogun.com']
+ALLOWED_HOSTS = ['tomi-ju4f.onrender.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -111,7 +111,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # If you have a global static folder
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CLOUDINARY_STORAGE = {
