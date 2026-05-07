@@ -119,16 +119,20 @@ STATICFILES_DIRS = [
 # WhiteNoise looks here to serve your CSS/JS
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# 3. Storage engine for compression and caching
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -137,3 +141,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+print(f"DEPLOY_DEBUG: Searching for static files in: {BASE_DIR / 'static'}")
+import os
+if os.path.exists(BASE_DIR / 'static'):
+    print(f"DEPLOY_DEBUG: Folder found! Contents: {os.listdir(BASE_DIR / 'static')}")
+else:
+    print("DEPLOY_DEBUG: Folder NOT FOUND at that path!")
