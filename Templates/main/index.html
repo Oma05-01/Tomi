@@ -1,0 +1,181 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO & Brand Metadata -->
+  <title>Tomi Ifebogun | Bespoke Couture & Editorial Fashion</title>
+  <meta name="description" content="Discover the bespoke couture of Tomi Ifebogun. Blending classic tailoring with avant-garde flair for an exclusive, luxury fashion experience.">
+  <meta name="theme-color" content="#000000"> <!-- Adjust to your dark brand color -->
+
+  <!-- Performance: Preconnect to external font servers to speed up typography loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'styles/css/main.css' %}?v={{ timestamp }}">
+</head>
+
+<body>
+  <!-- ==========================================
+       1. CINEMATIC INTRO EXPERIENCE
+       (Strictly preserved for main.js timing)
+  =========================================== -->
+  <div id="preloader" aria-hidden="true">
+    <img src="{% static 'images/logo.jpg' %}" alt="Tomi Couture Loading" id="preloader-image">
+  </div>
+
+  <div id="intro" style="display: none;" aria-hidden="true">
+    <!-- decoding="async" helps video load without blocking the main thread -->
+    <video id="intro-video" autoplay muted playsinline disablePictureInPicture>
+      <source src="{% static 'videos/vid.mp4' %}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div id="overlay"></div>
+    <div id="bio" style="display: none;">
+      <h2>Tomi Ifebogun</h2>
+      <p>With over a decade crafting bespoke couture, Tomi Ifebogun blends classic tailoring and avant-garde flair to create pieces that tell a unique story.</p>
+    </div>
+    <div id="skip-notification" style="display: none;" role="button" tabindex="0">Double tap to skip video</div>
+  </div>
+
+  <!-- ==========================================
+       2. MAIN PLATFORM CONTENT
+  =========================================== -->
+  <div id="main-content" style="display: none;">
+
+    {% block header %}
+    <header class="site-header">
+      <nav aria-label="Main Navigation">
+        <!-- Make the logo clickable to act as a reset/return to top -->
+        <a href="/#main-content" class="logo" aria-label="Tomi Ifebogun Home">Tomi Ifebogun</a>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#partners">Partnerships</a></li>
+          <li><a href="#contact" class="nav-cta-link">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    {% endblock %}
+
+
+    {% block content %}
+    <main>
+      <!-- Portfolio Gallery (Couture Catalog) -->
+      <section id="portfolio" class="portfolio section-padding">
+        <header class="section-header">
+          <h2 class="editorial-heading">Featured Works</h2>
+          <p class="section-subtitle">An archive of tailored narratives.</p>
+        </header>
+
+        <div class="gallery">
+          {% for pic in photo %}
+          <!-- Semantic figure tag for artwork/fashion pieces -->
+          <figure class="gallery-item" data-photo-id="{{ pic.id }}">
+             <a href="{% url 'detail' pic.id %}" class="zoom-link" aria-label="View details of {{ pic.title }}">
+                <!-- Performance: Lazy loading and Async decoding for heavy high-res fashion images -->
+                <img
+                  src="{{ pic.full_url.url }}"
+                  alt="{{ pic.title }} - Couture piece by Tomi Ifebogun"
+                  loading="lazy"
+                  decoding="async"
+                >
+                <!-- Optional: Overlay title for hover effects -->
+                <figcaption class="gallery-caption">
+                  <span class="caption-title">{{ pic.title }}</span>
+                  <span class="caption-action">View Details</span>
+                </figcaption>
+             </a>
+          </figure>
+          {% endfor %}
+        </div>
+
+        <!-- Container for AJAX loaded detail views -->
+        <div id="detail-container" aria-live="polite"></div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="about section-padding">
+        <div class="about-grid">
+          <div class="about-text">
+            <h2 class="editorial-heading">The Designer</h2>
+            <p>
+              With over a decade crafting bespoke couture, Tomi Ifebogun blends classic tailoring
+              and avant-garde flair to create pieces that tell a unique story. Every cut, stitch, and fabric choice is a deliberate step toward architectural elegance.
+            </p>
+          </div>
+          <!-- Space for a future editorial portrait of the designer -->
+          <div class="about-image-placeholder">
+                <img src="{% static 'images/portrait.png' %}" alt="Portrait Picture of Tomi" id="image">
+          </div>
+        </div>
+      </section>
+
+      <!-- Call to Action -->
+      <section class="cta section-padding text-center">
+        <h2 class="editorial-heading">Ready to Elevate Your Wardrobe?</h2>
+        <p>Commission a bespoke piece tailored entirely to your narrative.</p>
+        <a href="{% url 'gallery' %}" class="btn btn-primary">Explore the Archive</a>
+      </section>
+    </main>
+    {% endblock %}
+
+    {% block footer %}
+    <!-- Footer / Client Connection Layer -->
+    <footer id="contact" class="site-footer section-padding">
+      <div class="footer-grid">
+
+        <!-- Inquiry Form -->
+        <div class="contact-form-wrapper">
+          <h2 class="editorial-heading">Private Inquiries</h2>
+          <p class="form-intro">For bespoke commissions, styling requests, and partnerships.</p>
+
+          <form class="contact-form" method="post" id="contactForm">
+            {% csrf_token %}
+            <!-- Enhanced form groups for luxury floating labels and accessibility -->
+            <div class="form-group">
+              <label for="client_name" class="visually-hidden">Name</label>
+              <input type="text" id="client_name" name="name" placeholder="Name" required autocomplete="name">
+            </div>
+
+            <div class="form-group">
+              <label for="client_email" class="visually-hidden">Email</label>
+              <input type="email" id="client_email" name="email" placeholder="Email" required autocomplete="email">
+            </div>
+
+            <div class="form-group">
+              <label for="client_message" class="visually-hidden">Inquiry Details</label>
+              <textarea id="client_message" name="message" placeholder="Tell us about your vision..." rows="5" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-submit">Submit Inquiry</button>
+          </form>
+        </div>
+
+        <!-- Contact Details -->
+        <div class="contact-info">
+          <h3 class="info-heading">Atelier</h3>
+          <address>
+            <p><a href="mailto:designer@example.com" class="hover-link">designer@example.com</a></p>
+            <p><a href="https://instagram.com/designer" target="_blank" rel="noopener noreferrer" class="hover-link">Instagram</a></p>
+            <p><a href="https://twitter.com/designer" target="_blank" rel="noopener noreferrer" class="hover-link">X (Twitter)</a></p>
+          </address>
+          <p class="copyright">&copy; {% now "Y" %} Tomi Ifebogun. All Rights Reserved.</p>
+        </div>
+
+      </div>
+    </footer>
+    {% endblock %}
+
+  </div>
+
+  <!-- Scripts -->
+  <!-- Defer attribute ensures HTML parses completely before executing heavy JS logic -->
+  <script src="{% static 'styles/js/main.js' %}?v=2" defer></script>
+
+</body>
+</html>

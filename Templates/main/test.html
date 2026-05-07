@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tomi | {{photo.title}} </title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'styles/css/details.css' %}">
+</head>
+
+<body>
+  <div id="ish">
+    <!-- Navigation -->
+    <nav>
+      <div class="logo">Tomi Ifebogun</div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#partners">Partnerships</a></li>
+      </ul>
+    </nav>
+
+    <div class="container">
+    <div class="main-img" style="background-image: url('{{ photo.full_url.url }}');"></div>
+      <div class="cards">
+        {% if photo.cut_1 %}
+          <div class="card">
+            <div class="card-img" style="background-image: url('{{ photo.cut_1.url }}');"></div>
+            <div class="card-text">Style Insight 1</div>
+          </div>
+        {% endif %}
+        {% if photo.cut_2 %}
+          <div class="card">
+            <div class="card-img" style="background-image: url('{{ photo.cut_2.url }}');"></div>
+            <div class="card-text">Style Insight 2</div>
+          </div>
+        {% endif %}
+        {% if photo.cut_3 %}
+          <div class="card">
+            <div class="card-img" style="background-image: url('{{ photo.cut_3.url }}');"></div>
+            <div class="card-text">Style Insight 3</div>
+          </div>
+        {% endif %}
+        {% if photo.cut_4 %}
+          <div class="card">
+            <div class="card-img" style="background-image: url('{{ photo.cut_4.url }}');"></div>
+            <div class="card-text">Style Insight 4</div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="description">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare dictum ex ut laoreet. In et magna eget eros
+      pretium vehicula. Vivamus bibendum lacus augue, non laoreet nunc malesuada eget. Donec vestibulum porta mattis.
+      In interdum purus eu massa fringilla varius. Morbi iaculis elit placerat feugiat condimentum. Donec tempus
+      pharetra dui id fermentum. Nam ipsum nisl, tempus id porta eu, ullamcorper facilisis nibh. Phasellus sagittis
+      convallis velit, mollis imperdiet velit commodo et. Vivamus ut luctus enim, eu accumsan massa. In lacus lectus,
+      fermentum et massa quis, viverra mattis arcu. Maecenas lacus justo, facilisis quis elementum mattis, iaculis at
+      metus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam
+      bibendum tincidunt tincidunt. Morbi accumsan semper suscipit.
+    </div>
+
+    <!-- Footer / Contact -->
+    <footer id="contact">
+      <h2>Contact Me</h2>
+      <form class="contact-form">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+      <p>Email: <a href="mailto:designer@example.com">designer@example.com</a></p>
+      <p>Instagram: <a href="https://instagram.com/designer" target="_blank">@designer</a></p>
+    </footer>
+  </div>
+
+  <!-- GSAP Animation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="{% static 'styles/js/details.js' %}"></script>
+
+</body>

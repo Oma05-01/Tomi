@@ -1,0 +1,144 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO & Brand Metadata -->
+  <title>{% block title %}Tomi Ifebogun | {{ photo.title|default:"Bespoke Couture" }} {% endblock %}</title>
+  <meta name="description" content="Explore the intricate details, fabric cuts, and narrative behind this bespoke couture piece by Tomi Ifebogun.">
+
+  {% block head %}
+  <!-- Preconnect for typography performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'styles/css/main.css' %}?v={{ timestamp }}"> <!-- Assuming you share the base nav/footer styles -->
+  <link rel="stylesheet" href="{% static 'styles/css/details.css' %}?v=2">
+  {% endblock %}
+</head>
+
+<body>
+  <div id="ish">
+
+    <!-- ==========================================
+         1. PLATFORM NAVIGATION (Synced with Index)
+    =========================================== -->
+    <header class="site-header">
+      <nav aria-label="Main Navigation">
+        <!-- Kept your route back to the main content block -->
+        <a href="/#main-content" class="logo" aria-label="Return to Home">
+          <!-- Text logo to match the new luxury brand identity, or you can restore the image here -->
+          Tomi Ifebogun
+        </a>
+        <ul class="nav-links">
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#portfolio">Portfolio</a></li>
+          <li><a href="/#partners">Partnerships</a></li>
+          <li><a href="#contact" class="nav-cta-link">Inquire</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    {% block content %}
+    <!-- ==========================================
+         2. COUTURE SHOWCASE (GSAP Structure Preserved)
+    =========================================== -->
+    <main>
+      <!-- Title added to give context to the piece -->
+      <header class="piece-header text-center" style="margin-top: 3rem;">
+        <h1 class="editorial-heading">{{ photo.title|default:"The Collection" }}</h1>
+        <p class="section-subtitle">Examine the craftsmanship</p>
+      </header>
+
+      <div class="container" aria-label="Interactive garment showcase">
+        <!-- Main piece -->
+        <div class="main-img" style="background-image: url('{{ photo.full_url.url }}');" role="img" aria-label="Full view of {{ photo.title }}"></div>
+
+        <!-- Detailed Cuts (Structure preserved for details.js GSAP targeting) -->
+        <div class="cards">
+          <div class="card" data-card="1">
+            <div class="card-img" style="background-image: url('{% if photo.cut_1 %}{{ photo.cut_1.url }}{% else %}{% static 'images/placeholder.jpg' %}{% endif %}');" role="img" aria-label="Detail cut 1"></div>
+          </div>
+
+          <div class="card" data-card="2">
+            <div class="card-img" style="background-image: url('{% if photo.cut_2 %}{{ photo.cut_2.url }}{% else %}{% static 'images/placeholder.jpg' %}{% endif %}');" role="img" aria-label="Detail cut 2"></div>
+          </div>
+
+          <div class="card" data-card="3">
+            <div class="card-img" style="background-image: url('{% if photo.cut_3 %}{{ photo.cut_3.url }}{% else %}{% static 'images/placeholder.jpg' %}{% endif %}');" role="img" aria-label="Detail cut 3"></div>
+          </div>
+
+          <div class="card" data-card="4">
+            <div class="card-img" style="background-image: url('{% if photo.cut_4 %}{{ photo.cut_4.url }}{% else %}{% static 'images/placeholder.jpg' %}{% endif %}');" role="img" aria-label="Detail cut 4"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           3. EDITORIAL NARRATIVE
+      =========================================== -->
+      <article class="description editorial-narrative section-padding">
+        <div class="narrative-content" style="max-width: 800px; margin: 0 auto;">
+          <!-- Moved text-align: center here so ONLY the heading is centered -->
+          <h2 class="editorial-heading" style="font-size: 2rem; margin-bottom: 1.5rem; text-align: center;">The Narrative</h2>
+
+          <!-- Added text-align: justify here for the magazine look -->
+          <p style="font-size: 1.1rem; color: #555; line-height: 1.8; text-align: justify;">
+            {{ photo.description|default:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare dictum ex ut laoreet. In et magna eget eros pretium vehicula. Vivamus bibendum lacus augue, non laoreet nunc malesuada eget. Donec vestibulum porta mattis. In interdum purus eu massa fringilla varius. Morbi iaculis elit placerat feugiat condimentum. Donec tempus pharetra dui id fermentum." }}
+          </p>
+        </div>
+      </article>
+    </main>
+    {% endblock %}
+
+    <!-- ==========================================
+         4. CLIENT CONNECTION (Synced with Index)
+    =========================================== -->
+    <footer id="contact" class="site-footer section-padding">
+      <div class="footer-grid" style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr; gap: 4rem;">
+
+        <div class="contact-form-wrapper">
+          <h2 class="editorial-heading" style="color: white;">Inquire About This Piece</h2>
+          <p class="form-intro" style="color: #999;">Commission a bespoke variation or request styling details.</p>
+
+          <form class="contact-form" method="post" action="{% url 'index' %}#contact">
+            <!-- CSRF Token would be needed here if processing POST directly -->
+            <div class="form-group">
+              <input type="text" name="name" placeholder="Name" required style="width: 100%; padding: 1rem 0; background: transparent; border: none; border-bottom: 1px solid #444; color: white; margin-bottom: 1rem;">
+            </div>
+            <div class="form-group">
+              <input type="email" name="email" placeholder="Email" required style="width: 100%; padding: 1rem 0; background: transparent; border: none; border-bottom: 1px solid #444; color: white; margin-bottom: 1rem;">
+            </div>
+            <div class="form-group">
+              <!-- Pre-filling the message with the piece title makes it feel like a premium concierge service -->
+              <textarea name="message" placeholder="Tell us about your vision..." rows="4" required style="width: 100%; padding: 1rem 0; background: transparent; border: none; border-bottom: 1px solid #444; color: white; margin-bottom: 1.5rem;">I am interested in learning more about {{ photo.title|default:"this piece" }}.</textarea>
+            </div>
+            <button type="submit" class="btn btn-submit" style="background: white; color: black; padding: 1rem 2rem; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em;">Submit Inquiry</button>
+          </form>
+        </div>
+
+        <div class="contact-info">
+          <h3 class="info-heading" style="text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;">Atelier</h3>
+          <address style="font-style: normal; color: #999; line-height: 2;">
+            <p><a href="mailto:designer@example.com" style="color: #999; text-decoration: none;">designer@example.com</a></p>
+            <p><a href="https://instagram.com/designer" target="_blank" style="color: #999; text-decoration: none;">Instagram</a></p>
+          </address>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  {% block scripts %}
+  <!-- GSAP Animation Core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- Optional GSAP plugins if you use them (e.g., ScrollTrigger) -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script> -->
+  <script src="{% static 'styles/js/details.js' %}?v={{ timestamp }}"></script>
+  {% endblock %}
+
+</body>
+</html>

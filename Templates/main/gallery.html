@@ -1,0 +1,101 @@
+{% extends 'main/detail.html' %}
+{% load static %}
+
+{% block title %}Tomi Ifebogun | The Digital Wardrobe {% endblock %}
+
+{% block head %}
+  {{ block.super }}
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'styles/css/wardrobe.css' %}?v=3">
+{% endblock %}
+
+{% block content %}
+<main class="gallery-main" style="min-height: 80vh; display: flex; flex-direction: column;">
+
+  <!-- Editorial Context Header -->
+  <header class="piece-header text-center" style="margin-top: 4rem; margin-bottom: 2rem;">
+    <h1 class="editorial-heading">The Archive</h1>
+    <p class="section-subtitle">An interactive exploration of bespoke tailoring</p>
+  </header>
+
+  <!-- Editorial Split Layout -->
+  <section class="archive-split" aria-label="Interactive 3D Wardrobe">
+
+    <!-- LEFT SIDE: The 3D Carousel -->
+    <div class="archive-carousel-side">
+      <div class="container wardrobe-container">
+        <div class="carousel" id="carousel">
+          {% if photos %}
+            {% for photo in photos %}
+              <div class="carousel__face"
+                 style="background-image: url('{{ photo.full_url.url }}');"
+                 data-photo-id="{{ photo.pk }}"
+                 role="img"
+                 aria-label="{{ photo.title|default:'Couture Piece' }}">
+                <span class="face-title">{{ photo.title }}</span>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="empty-state text-center" style="padding: 4rem; color: #777;">
+              <p>The archive is currently being curated. Please return later.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE: The Narrative/Content -->
+    <div class="archive-content-side">
+      <h2 class="editorial-heading" style="font-size: 2.2rem;">Curated Elegance</h2>
+      <p style="color: #555; line-height: 1.8; font-size: 1.1rem; margin-bottom: 2.5rem;">
+        Every piece in this archive represents hours of meticulous craftsmanship.
+        Interact with the wardrobe to explore the silhouettes, fabrics, and structural
+        details that define the Tomi Ifebogun aesthetic.
+      </p>
+
+      <!-- Optional: Dynamic Stats about the collection -->
+      <div class="archive-stats" style="display: flex; gap: 3rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
+         <div>
+           <span style="display: block; font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--logo-accent);">{{ photos|length }}</span>
+           <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: #999;">Couture Pieces</span>
+         </div>
+         <div>
+           <span style="display: block; font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--logo-accent);">{% now "Y" %}</span>
+           <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: #999;">Collection Year</span>
+         </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Preview overlay (Luxury Modal) -->
+  <div class="preview-overlay" id="previewOverlay" aria-hidden="true">
+        <!-- New: Dedicated close button for better UX -->
+        <button class="overlay-close-btn" id="closeOverlayBtn" aria-label="Close preview" style="position: absolute; top: 2rem; right: 3rem; background: transparent; border: none; color: white; font-size: 2.5rem; cursor: pointer; transition: transform 0.3s ease;">&times;</button>
+
+        <div class="preview-content">
+          <!-- Added decoding async to prevent frame drops when the large image swaps in -->
+          <img id="previewImage" src="" alt="Couture Preview" decoding="async">
+
+          <div class="preview-actions" style="margin-top: 2rem;">
+            <!-- Upgraded button class to match the luxury UI system from main.css -->
+            <a id="closerLookBtn" href="#" class="btn btn-primary closer-btn" style="background-color: white; color: black; padding: 1rem 2rem; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none;">Examine Details</a>
+          </div>
+        </div>
+      </div>
+
+</main>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <!-- GSAP Core (ensure it's loaded before your custom script) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- Optional GSAP Draggable plugin if your 3D carousel uses mouse drag -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script> -->
+  <script src="{% static 'styles/js/wardrobe.js' %}?v={{ timestamp }}"></script>
+{% endblock %}

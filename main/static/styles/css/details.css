@@ -1,0 +1,210 @@
+/* ==========================================
+   1. CORE VARIABLES & TYPOGRAPHY
+========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&display=swap');
+
+:root {
+  /* Strictly preserved brand colors */
+  --background-color: #FFFFFF;
+  --text-color: #333333;
+  --primary-color: #5D4037;
+  --accent-color: #8BC34A;
+  --logo-accent: #a86018; /* From your specific detail setup */
+  --card-background: #f9f9f9; /* Softened from orange to a luxury neutral */
+  --button-color: #000000;
+  --button-text-color: #FFFFFF;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+/* ==========================================
+   2. EDITORIAL SHOWCASE GRID (GSAP SAFE)
+========================================== */
+.container {
+  max-width: 1200px; /* Widened for a grander magazine feel */
+  width: 90%;
+  margin: 4rem auto;
+  display: flex;
+  flex-direction: row;
+  gap: 4rem; /* Increased whitespace for luxury aesthetic */
+  align-items: stretch; /* Aligns heights automatically */
+  padding: 20px 0;
+}
+
+/* Main Feature Image */
+.main-img {
+  flex: 1.2;
+  aspect-ratio: 3 / 4;
+  background-size: contain; /* CHANGED: Forces the whole image to be visible */
+  background-position: center; /* Centers the image perfectly in the frame */
+  background-repeat: no-repeat; /* Prevents the image from duplicating */
+  background-color: var(--card-background); /* Gives empty space a soft, premium matte finish */
+  border-radius: 4px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Detail Cuts Grid */
+.cards {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 0; /* Align with top of main image */
+  align-content: start;
+}
+
+/* Individual Card Animations/Wrapper */
+.card {
+  background-color: var(--card-background); /* Changed from transparent to frame the contained image */
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  opacity: 0;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.card.loaded {
+  opacity: 1 !important;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+/* The actual detail image inside the card */
+.card-img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background-size: contain; /* CHANGED: Forces the whole image to be visible */
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.8s ease;
+}
+
+.card:hover .card-img {
+  transform: scale(1.05); /* Image slightly zooms inside the card on hover */
+}
+
+/* ==========================================
+   3. NARRATIVE & DESCRIPTION
+========================================== */
+.description {
+  max-width: 800px;
+  margin: 6rem auto;
+  font-size: 1.1rem;
+  line-height: 2;
+  color: #555;
+  /* Removed text-align: center from here */
+  opacity: 0;
+}
+
+/* Narrative first-letter drop cap (High-fashion magazine effect) */
+.description p::first-letter {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  float: left;
+  line-height: 1;
+  padding-right: 0.5rem;
+  color: var(--logo-accent);
+}
+
+/* ==========================================
+   4. NAVIGATION FALLBACKS
+   (If main.css isn't loaded here)
+========================================== */
+nav {
+  position: sticky;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.logo-link {
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--logo-accent);
+  letter-spacing: 0.05em;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2.5rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--logo-accent);
+}
+
+
+/* ==========================================
+   5. RESPONSIVE DESIGN (Mobile & Tablet)
+========================================== */
+@media (max-width: 1024px) {
+  .container {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 2rem;
+    margin: 2rem auto;
+  }
+
+  .main-img {
+    width: 100%;
+    aspect-ratio: 4 / 5; /* Slightly shorter on mobile so it doesn't take up the whole screen */
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr); /* Keep 2 columns on mobile for details */
+    gap: 1rem;
+    margin-top: 0;
+  }
+
+  .description {
+    padding: 0 1.5rem;
+    font-size: 1rem;
+    margin: 4rem auto;
+  }
+
+  .nav-links {
+    display: none; /* Hide on mobile to keep it clean */
+  }
+}

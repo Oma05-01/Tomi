@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Atelier Admin | {{ action }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 4rem 2rem;
+      display: flex;
+      justify-content: center;
+    }
+    h1, h2 { font-family: 'Playfair Display', serif; font-weight: 400; }
+
+    .form-wrapper {
+      background: #FFFFFF;
+      padding: 3rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .form-header {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    /* Target the classes we created in forms.py */
+    .admin-input {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+
+    .admin-input:focus {
+      outline: none;
+      border-color: #a86018; /* Brand accent color */
+    }
+
+    .admin-file-input {
+      margin-top: 0.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .form-group label {
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #555;
+    }
+
+    /* Button Styling */
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      flex: 1;
+      background: #a86018;
+      color: white;
+      padding: 1rem;
+      text-decoration: none;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      text-align: center;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover { background: #874d14; }
+
+    .btn-cancel {
+      flex: 1;
+      background: #f4f4f4;
+      color: #333;
+      padding: 1rem;
+      text-decoration: none;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-align: center;
+      transition: background 0.3s ease;
+    }
+
+    .btn-cancel:hover { background: #e0e0e0; }
+  </style>
+</head>
+<body>
+
+  <div class="form-wrapper">
+    <div class="form-header">
+      <h2>{{ action }}</h2>
+      <p style="color: #777; margin-top: -0.5rem; font-size: 0.9rem;">Manage your couture archive details below.</p>
+    </div>
+
+    <!-- enctype="multipart/form-data" is absolutely critical for image uploads to work -->
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {% for field in form %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          <!-- Render form errors elegantly -->
+          {% if field.errors %}
+            <div style="color: #d9534f; font-size: 0.8rem; margin-top: -1rem; margin-bottom: 1rem;">
+              {{ field.errors }}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <div class="btn-group">
+        <a href="{% url 'dashboard' %}" class="btn-cancel">Cancel</a>
+        <button type="submit" class="btn">Save Piece</button>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>

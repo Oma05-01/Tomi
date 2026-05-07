@@ -1,0 +1,252 @@
+/* ==========================================
+   1. DIGITAL WARDROBE LAYOUT
+========================================== */
+
+/* Removed the hardcoded lightgray body override.
+   We now inherit the luxury typography and background from main.css */
+
+.gallery-main {
+  position: relative;
+  overflow: hidden; /* Prevents horizontal scroll from 3D elements */
+}
+
+.archive-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Perfect 50/50 split */
+  gap: 8rem; /* INCREASED GAP: Forces a massive empty lane down the middle */
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+  padding: 0 2rem;
+  min-height: 65vh;
+  overflow-x: hidden; /* Prevents the 3D swing from causing a horizontal scrollbar */
+}
+
+.archive-carousel-side {
+  display: flex;
+  justify-content: center;
+  perspective: 1200px;
+  padding: 4rem 0; /* Gives vertical breathing room for the 3D spin */
+}
+
+/* Elegant fade-in for the text side */
+.archive-content-side {
+  max-width: 500px;
+  opacity: 0;
+  animation: fadeInRight 1s ease 0.5s forwards;
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Shrinking the carousel so the 3D swing stays in its lane */
+.wardrobe-container {
+  position: relative;
+  width: 300px;
+  height: 450px;
+  margin: 0 auto;
+  transform-style: preserve-3d;
+  transform: scale(0.65); /* Scaled down slightly more to prevent overlapping the text */
+}
+
+/* ==========================================
+   2. 3D CAROUSEL ENGINE
+========================================== */
+.carousel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  /* Smooth linear rotation. JS can pause this by adding the .paused class */
+  animation: rotate360 45s infinite forwards linear;
+}
+
+.carousel.paused {
+  animation-play-state: paused;
+}
+
+.carousel__face {
+  position: absolute;
+  width: 280px; /* Slightly narrower than container for breathing room */
+  height: 400px; /* True editorial portrait ratio */
+  top: 50%;
+  left: 50%;
+  margin-top: -200px; /* Half of height */
+  margin-left: -140px; /* Half of width */
+  background-size: cover;
+  background-position: center top; /* Focuses on the upper body/face in fashion shots */
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: transform 0.4s ease, filter 0.4s ease;
+  /* Replaced the harsh inset shadow with a subtle darkening overlay */
+  box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.3);
+}
+
+/* Hover effect on individual 3D cards */
+.carousel__face:hover {
+  box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.1); /* Lightens up on hover */
+  /* The slight scale-up makes it feel interactive */
+}
+
+/* Typographic overlay on the cards */
+.face-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: #FFFFFF;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  text-align: center;
+  padding: 0 1rem;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.8); /* Ensures readability against any fabric */
+}
+
+.carousel__face:hover .face-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes rotate360 {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(-360deg); }
+}
+
+/* ==========================================
+   3. CINEMATIC LIGHTBOX (PREVIEW OVERLAY)
+========================================== */
+.preview-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Forces strict viewport width */
+  height: 100vh; /* Forces strict viewport height */
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px); /* Crucial for Safari/iOS full coverage */
+  background: rgba(255, 255, 255, 0.05); /* Extremely faint tint forces the browser to render the edges */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.preview-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* The X Close Button */
+.overlay-close-btn {
+  /* Changed to dark grey so it's visible against the white blurred page */
+  color: #333333 !important;
+  transition: color 0.3s ease, transform 0.3s ease !important;
+}
+
+.overlay-close-btn:hover {
+  /* Turns to your luxury brand brown on hover */
+  color: #a86018 !important;
+  transform: scale(1.1) rotate(90deg) !important;
+}
+
+.preview-content {
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: row; /* Places image and button side-by-side */
+  align-items: center;
+  justify-content: center;
+  gap: 4rem; /* Beautiful, wide breathing room between image and button */
+}
+
+/* The actual high-res preview image */
+.preview-content img {
+  max-width: 55vw;
+  height: auto; /* Shrink-wraps the image, removing empty top/bottom gaps */
+  max-height: 80vh; /* Prevents it from ever overflowing the screen */
+  border-radius: 4px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  object-fit: contain;
+  margin: 0; /* Ensures no invisible margins are pushing it down */
+}
+
+/* ==========================================
+   4. RESPONSIVE DESIGN
+========================================== */
+@media (max-width: 768px) {
+  .wardrobe-container {
+    height: 400px;
+  }
+
+  .carousel__face {
+    width: 220px;
+    height: 320px;
+    margin-top: -160px;
+    margin-left: -110px;
+  }
+
+  .face-title {
+    font-size: 1.2rem;
+  }
+
+  .overlay-close-btn {
+    top: 1rem !important;
+    right: 1.5rem !important;
+    font-size: 2rem !important;
+  }
+
+  .archive-split {
+    grid-template-columns: 1fr; /* Stacks to 1 column */
+    gap: 4rem; /* STRICT BARRIER: Forces the text far below the swinging 3D circle */
+    text-align: center;
+    padding-top: 2rem;
+  }
+
+  .wardrobe-container {
+    transform: scale(0.55); /* Shrinks the circle perfectly for phone screens */
+  }
+
+  .archive-carousel-side {
+    padding: 0;
+    margin-bottom: 2rem; /* Extra push to keep the text safe from overlap */
+  }
+
+  .archive-content-side {
+    margin: 0 auto 4rem auto;
+  }
+
+  .archive-stats {
+    justify-content: center;
+  }
+
+  .preview-content {
+    flex-direction: column;
+    gap: 1rem; /* Reduced gap */
+    width: 100%;
+    max-height: 100vh; /* Prevents it from being taller than the screen */
+    overflow-y: auto; /* Allows scrolling if the user's phone is very short */
+    padding: 2rem 1rem; /* Adds safe breathing room so it doesn't hit the edges */
+  }
+
+  .preview-content img {
+    max-width: 90vw;
+    height: auto;
+    max-height: 45vh; /* Shrunk slightly more to guarantee button visibility */
+    margin-top: 2rem; /* Pushes it down so the X button doesn't overlap the image */
+  }
+
+  .overlay-close-btn {
+    top: 10px !important;
+    right: 15px !important;
+    font-size: 2.5rem !important;
+    z-index: 10; /* Ensures the X is always clickable above the image */
+  }
+ }
