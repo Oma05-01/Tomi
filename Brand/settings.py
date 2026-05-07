@@ -23,12 +23,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
 
-    # Cloudinary MUST go before staticfiles
-    'cloudinary_storage',
+    # MOVE THIS UP:
     'django.contrib.staticfiles',
+
+    'cloudinary_storage',
     'cloudinary',
 
-    # Your Apps
     'main',
     'design',
 ]
