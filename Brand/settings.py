@@ -108,11 +108,18 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
+# 1. Base directory where your source files live
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / 'static',  # This matches your root 'static' folder
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# 2. Where files go AFTER collectstatic runs
+# WhiteNoise looks here to serve your CSS/JS
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# 3. Storage engine for compression and caching
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CLOUDINARY_STORAGE = {
